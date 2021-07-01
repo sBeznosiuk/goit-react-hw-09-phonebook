@@ -20,6 +20,7 @@ const ContactList = ({
 }) => {
   useEffect(() => {
     onLoadingFetchContacts();
+    // eslint-disable-next-line
   }, []);
 
   const renderItems = () => {
