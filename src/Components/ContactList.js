@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import ContactListItem from './ContactListItem';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { removeContact, fetchContacts } from '../redux/contacts/operations';
 import Loader from 'react-loader-spinner';
 import {
@@ -11,17 +11,15 @@ import {
 } from '../redux/contacts/contacts-selectors';
 import { StyledList } from './styles';
 
-const ContactList = ({
-  filter,
-  isLoading,
-  contacts,
-  onRemoveContact,
-  onLoadingFetchContacts,
-}) => {
+const ContactList = ({ onRemoveContact, onLoadingFetchContacts }) => {
   useEffect(() => {
     onLoadingFetchContacts();
     // eslint-disable-next-line
   }, []);
+
+  const filter = useSelector(getFilter);
+  const contacts = useSelector(getContacts);
+  const isLoading = useSelector(getLoading);
 
   const renderItems = () => {
     if (filter) {
@@ -64,6 +62,24 @@ const ContactList = ({
     </>
   );
 };
+
+ContactList.propTypes = {
+  filter: PropTypes.string,
+  onClickRemove: PropTypes.func,
+};
+
+// const mapStateToProps = state => ({
+//   contacts: getContacts(state),
+//   filter: getFilter(state),
+//   isLoading: getLoading(state),
+// });
+
+const mapDispatchToProps = dispatch => ({
+  onRemoveContact: e => dispatch(removeContact(e.target.id)),
+  onLoadingFetchContacts: () => dispatch(fetchContacts()),
+});
+
+export default connect(null, mapDispatchToProps)(ContactList);
 
 // class ContactList extends Component {
 //   componentDidMount() {
@@ -113,20 +129,3 @@ const ContactList = ({
 //     );
 //   }
 // }
-ContactList.propTypes = {
-  filter: PropTypes.string,
-  onClickRemove: PropTypes.func,
-};
-
-const mapStateToProps = state => ({
-  contacts: getContacts(state),
-  filter: getFilter(state),
-  isLoading: getLoading(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onRemoveContact: e => dispatch(removeContact(e.target.id)),
-  onLoadingFetchContacts: () => dispatch(fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
