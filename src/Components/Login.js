@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from '../redux/auth/operations';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -9,7 +9,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+  const dispatch = useDispatch();
+  const onLogin = user => dispatch(login(user));
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -76,11 +79,7 @@ const Login = ({ onLogin }) => {
   );
 };
 
-const mapDispatchToProps = {
-  onLogin: login,
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
 
 // class Login extends Component {
 //   state = {

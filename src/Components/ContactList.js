@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import ContactListItem from './ContactListItem';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeContact, fetchContacts } from '../redux/contacts/operations';
 import Loader from 'react-loader-spinner';
 import {
@@ -11,11 +10,15 @@ import {
 } from '../redux/contacts/contacts-selectors';
 import { StyledList } from './styles';
 
-const ContactList = ({ onRemoveContact, onLoadingFetchContacts }) => {
+const ContactList = () => {
   useEffect(() => {
     onLoadingFetchContacts();
     // eslint-disable-next-line
   }, []);
+
+  const dispatch = useDispatch();
+  const onRemoveContact = e => dispatch(removeContact(e.target.id));
+  const onLoadingFetchContacts = () => dispatch(fetchContacts());
 
   const filter = useSelector(getFilter);
   const contacts = useSelector(getContacts);
@@ -63,10 +66,7 @@ const ContactList = ({ onRemoveContact, onLoadingFetchContacts }) => {
   );
 };
 
-ContactList.propTypes = {
-  filter: PropTypes.string,
-  onClickRemove: PropTypes.func,
-};
+export default ContactList;
 
 // const mapStateToProps = state => ({
 //   contacts: getContacts(state),
@@ -74,12 +74,10 @@ ContactList.propTypes = {
 //   isLoading: getLoading(state),
 // });
 
-const mapDispatchToProps = dispatch => ({
-  onRemoveContact: e => dispatch(removeContact(e.target.id)),
-  onLoadingFetchContacts: () => dispatch(fetchContacts()),
-});
-
-export default connect(null, mapDispatchToProps)(ContactList);
+// const mapDispatchToProps = dispatch => ({
+//   onRemoveContact: e => dispatch(removeContact(e.target.id)),
+//   onLoadingFetchContacts: () => dispatch(fetchContacts()),
+// });
 
 // class ContactList extends Component {
 //   componentDidMount() {

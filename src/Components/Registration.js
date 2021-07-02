@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { register } from '../redux/auth/operations';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -9,7 +9,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-const Registration = ({ onRegister }) => {
+const Registration = () => {
+  const dispatch = useDispatch();
+  const onRegister = user => dispatch(register(user));
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -95,11 +98,7 @@ const Registration = ({ onRegister }) => {
   );
 };
 
-const mapDispatchToProps = {
-  onRegister: register,
-};
-
-export default connect(null, mapDispatchToProps)(Registration);
+export default Registration;
 
 // class Registration extends Component {
 //   state = {

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types'; // ES6
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addContact } from '../redux/contacts/operations';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-const Form = ({ onAddContact }) => {
+const Form = () => {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -21,7 +22,9 @@ const Form = ({ onAddContact }) => {
   const onHandleSubmit = e => {
     e.preventDefault();
 
-    onAddContact({ name, number });
+    dispatch(addContact({ name, number }));
+
+    // onAddContact({ name, number });
 
     setName('');
     setNumber('');
@@ -72,17 +75,7 @@ const Form = ({ onAddContact }) => {
   );
 };
 
-Form.propTypes = {
-  addContact: PropTypes.func,
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onAddContact: contact => dispatch(addContact(contact)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Form);
+export default Form;
 
 // class Form extends Component {
 // static propTypes = {

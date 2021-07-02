@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { filterContacts } from '../redux/contacts/actions';
 import { TextField } from '@material-ui/core';
 
-const Filter = ({ onFilter }) => {
+const Filter = () => {
+  const dispatch = useDispatch();
+  const onFilter = e => dispatch(filterContacts(e.target.value));
   return (
     <TextField
       type="text"
@@ -15,12 +16,8 @@ const Filter = ({ onFilter }) => {
   );
 };
 
-Filter.propTypes = {
-  onFilter: PropTypes.func,
-};
+export default Filter;
 
-const mapDispatchToProps = dispatch => ({
-  onFilter: e => dispatch(filterContacts(e.target.value)),
-});
-
-export default connect(null, mapDispatchToProps)(Filter);
+// const mapDispatchToProps = dispatch => ({
+//   onFilter: e => dispatch(filterContacts(e.target.value)),
+// });
